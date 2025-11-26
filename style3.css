@@ -60,24 +60,41 @@ body {
 }
 
 /* MENU */
-.main-nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 25px;
+.topnav {
+    overflow: hidden;
+    background-color: transparent;
+    position: relative;
 }
 
-.main-nav a {
+.topnav #myLinks {
+    display: none;
+}
+
+.topnav a {
     color: #e0f2fe;
     text-decoration: none;
     font-weight: 600;
     padding: 6px 12px;
     border-radius: 999px;
+    display: block;
 }
 
-.main-nav a:hover {
+.topnav a.icon {
+    background: transparent;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.topnav a:hover {
     background-color: white;
     color: #15803d;
+}
+
+.active {
+    background: linear-gradient(90deg, #22c55e, #0ea5e9);
+    color: white;
 }
 /* ========================================
    KHUNG CHÍNH

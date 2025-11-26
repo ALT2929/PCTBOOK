@@ -5,7 +5,8 @@
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     height: 100%;
 }
 
@@ -30,7 +31,7 @@ body {
     background: linear-gradient(90deg, #22c55e, #0ea5e9);
     padding: 15px 20px 20px;
     color: white;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Logo + tên web */
@@ -45,13 +46,13 @@ body {
 .circle-logo {
     width: 70px;
     height: 70px;
-    background-color: rgba(255,255,255,0.25);
+    background-color: rgba(255, 255, 255, 0.25);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    border: 2px solid rgba(255,255,255,0.4);
+    border: 2px solid rgba(255, 255, 255, 0.4);
 }
 
 .circle-logo img {
@@ -69,24 +70,41 @@ body {
 }
 
 /* MENU */
-.main-nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 25px;
+.topnav {
+    overflow: hidden;
+    background-color: transparent;
+    position: relative;
 }
 
-.main-nav a {
+.topnav #myLinks {
+    display: none;
+}
+
+.topnav a {
     color: #e0f2fe;
     text-decoration: none;
     font-weight: 600;
     padding: 6px 12px;
     border-radius: 999px;
+    display: block;
 }
 
-.main-nav a:hover {
+.topnav a.icon {
+    background: transparent;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.topnav a:hover {
     background-color: white;
     color: #15803d;
+}
+
+.active {
+    background: linear-gradient(90deg, #22c55e, #0ea5e9);
+    color: white;
 }
 
 /* ============================== */
@@ -96,7 +114,8 @@ body {
     max-width: 1100px;
     margin: 20px auto 40px;
     padding: 0 20px;
-    flex: 1; /* đẩy footer xuống đáy */
+    flex: 1;
+    /* đẩy footer xuống đáy */
 }
 
 /* Chào mừng */
@@ -111,7 +130,7 @@ body {
 }
 
 .welcome-section p {
-    font-size:20px;
+    font-size: 20px;
     color: #475569;
 }
 
@@ -163,18 +182,18 @@ body {
 .project-text {
     flex: 1.1;
     min-width: 260px;
-    
+
 }
 
 .project-text h1 {
     font-size: 26px;
     color: #14532d;
     margin-bottom: 10px;
-    margin-left: -50px; 
+    margin-left: -50px;
 }
 
 .project-text h2 {
-    font-size: 25px;
+    font-size: 20px;
     margin: 18px 0 8px;
     color: #0f766e;
     margin-left: -20px;
@@ -183,11 +202,10 @@ body {
 
 .project-text p {
     margin-bottom: 10px;
-    color: #000000;
+    color: #475569;
     background: #ebfae9;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     padding: 25px;
-    font-size: 20px;
     border-radius: 10px;
 }
 
@@ -196,7 +214,7 @@ body {
     margin-bottom: 10px;
     color: #475569;
     background: #ebfae9;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     padding: 25px;
     border-radius: 10px;
 }
@@ -221,6 +239,7 @@ body {
     background-color: #ffffff;
     color: #15803d;
 }
+
 /* ============================== */
 /* FOOTER */
 /* ============================== */
@@ -231,6 +250,7 @@ body {
     border-top: 1px solid #e2e8f0;
     background-color: white;
 }
+
 /* ============================== */
 /* TRANG TIN TỨC */
 /* ============================== */
@@ -253,7 +273,7 @@ body {
     font-size: 26px;
     margin-bottom: 15px;
     color: #14532d;
-    margin-left: -300px; 
+    margin-left: -300px;
 }
 
 /* ITEM TIN */
@@ -261,9 +281,9 @@ body {
     background: #ebfae9;
     padding: 12px;
     border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     list-style: none;
-    margin-left: -300px; 
+    margin-left: -300px;
     margin-bottom: 10px;
 }
 
@@ -297,7 +317,7 @@ body {
     font-size: 13px;
     color: #727573;
     margin-bottom: 4px;
-    margin-left:7px;
+    margin-left: 7px;
 }
 
 .news-summary {
@@ -312,13 +332,13 @@ body {
     width: 300px;
     max-height: 650px;
     object-fit: cover;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    margin-right:-300px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    margin-right: -300px;
     display: block;
     justify-content: center;
     height: auto;
     margin-bottom: 20px;
-    
+
 }
 
 /* Responsive cho điện thoại */
@@ -326,23 +346,30 @@ body {
     .news-layout {
         flex-direction: column;
     }
-    
+
     .news-banner img {
         width: 100%;
         max-width: 350px;
         margin: 0 auto;
     }
+
     /* SỬA LỖI BỊ KHUẤT TRÁI TRÊN ĐIỆN THOẠI */
     .news-list {
-        margin-left: 0;      /* bỏ margin âm đi */
-        padding-left: 0;     /* cho sát mép lại bình thường */
+        margin-left: 0;
+        /* bỏ margin âm đi */
+        padding-left: 0;
+        /* cho sát mép lại bình thường */
     }
-    .news-list h1{
-        margin-left: 0;      /* bỏ margin âm đi */
+
+    .news-list h1 {
+        margin-left: 0;
+        /* bỏ margin âm đi */
         padding-left: 0;
     }
+
     .news-item {
-        margin-left: 0;      /* nếu trước đó có margin-left âm thì reset luôn */
+        margin-left: 0;
+        /* nếu trước đó có margin-left âm thì reset luôn */
     }
 }
 
@@ -350,15 +377,17 @@ body {
 /* RESPONSIVE */
 /* ============================== */
 @media (max-width: 768px) {
-    .main-nav{
+    .main-nav {
         padding-left: 50px;
         padding-right: 50px;
     }
+
     .project-text h1 {
         padding-left: 50px;
     }
+
     .header-center {
-        gap: 10px;   /* Cho menu tự xuống hàng */
+        gap: 10px;
     }
 
     .circle-logo {
@@ -373,6 +402,7 @@ body {
     .hero-section {
         flex-direction: column;
     }
+
     .project-layout {
         flex-direction: column;
     }
