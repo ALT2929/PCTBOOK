@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style2.css" />
+    <title>Đọc thử</title>
+</head>
+
+<body>
+    <div class="book-container">
+        <!-- Flipbook -->
+        <div id="flipbook" class="flipbook"></div>
+
+        <!-- Thanh điều khiển -->
+        <div class="book-controls">
+            <span>Trang: <span id="current-page">1</span>/<span id="total-pages">0</span></span>
+
+            <div class="goto-box">
+                <input type="number" id="goto-page" min="1" placeholder="Nhập số trang..." />
+                <button id="btn-goto">Tới trang</button>
+                <a href="index1.html">
+                    <button id="btn-goto">Về trang chủ</button>
+                </a>
+
+            </div>
+
+            <!-- Nút nghe sách nói -->
+            <button id="btn-audio">▶ Nghe sách nói</button>
+        </div>
+    </div>
+
+    <!-- ÂM THANH LẬT SÁCH -->
+    <audio id="flip-sound" src="flip.mp3" preload="auto"></audio>
+
+    <!-- ÂM THANH SÁCH NÓI (sẽ gán src bằng JS theo từng sách) -->
+    <audio id="book-audio" preload="auto"></audio>
+
+    <!-- jQuery và Turn.js -->
+    <script src="jquery.js"></script>
+    <script src="turn.js"></script>
+
+    <!-- PDF.js từ CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        // Cấu hình worker của PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+        // ===============================
+        //   DANH SÁCH SÁCH (PDF + AUDIO)
+        //   -> chỉnh file sách nói, PDF ở đây
+        // ===============================
+        const books = [
+            {
+                id: 1,
+                title: "Dám Bị Ghét",
+                author: "Ichiro Kishimi & Fumitake Koga",
+                pdf: "pdf/1-dam-bi-ghet.pdf",
+                audio: "audio/1-dam-bi-ghet.mp3",
+            },
+            {
+                id: 2,
+                title: "Đắc Nhân Tâm",
+                author: "Dale Carnegie",
+                pdf: "pdf/2-dac-nhan-tam.pdf",
+                audio: "audio/2-dac-nhan-tam.mp3",
+            },
+            {
+                id: 3,
+                title: "Nhà Giả Kim",
+                author: "Paulo Coelho",
+                pdf: "pdf/3-nha-gia-kim.pdf",
+                audio: "audio/3-nha-gia-kim.mp3",
+            },
+            {
+                id: 4,
+                title: "Tuổi Trẻ Đáng Giá Bao Nhiêu",
+                author: "Rosie Nguyễn",
+                pdf: "pdf/4-tuoi-tre-dang-gia-bao-nhieu.pdf",
+                audio: "audio/4-tuoi-tre.mp3",
+            },
+            {
+                id: 5,
+                title: "Khi hơi thở hoá thinh không",
+                author: "Paul Kalanithi",
+                pdf: "pdf/5-khi-hoi-tho-hoa-thinh-khong.pdf",
+                audio: "audio/5-khi-hoi-tho.mp3",
+            },
+            {
+                id: 6,
+                title: "Tôi thấy hoa vàng trên cỏ xanh",
+                author: "Nguyễn Nhật Ánh",
+                pdf: "pdf/6-toi-thay-hoa-vang-tren-co-xanh.pdf",
+                audio: "audio/6-hoa-vang.mp3",
+            },
+            {
+                id: 7,
+                title: "Mắt biếc",
+                author: "Nguyễn Nhật Ánh",
+                pdf: "pdf/7.pdf",          // 👈 file PDF demo bạn đang dùng có thể đổi thành sach-demo.pdf
+                audio: "audio/7.mp3",     // 👈 file sách nói tương ứng
+            },
+            {
+                id: 8,
+                title: "Cô gái đến từ hôm qua",
+                author: "Nguyễn Nhật Ánh",
+                pdf: "pdf/8-co-gai-den-tu-hom-qua.pdf",
+                audio: "audio/8-co-gai.mp3",
+            },
+            {
+                id: 9,
+                title: "Sống xanh không khó",
+                author: "Nam Kha",
+                pdf: "pdf/9-song-xanh-khong-kho.pdf",
+                audio: "audio/9-song-xanh.mp3",
+            },
+            {
+                id: 10,
+                title: "Niên lịch miền gió cát",
+                author: "Aldo Leopold",
+                pdf: "pdf/10-nien-lich-mien-gio-cat.pdf",
+                audio: "audio/10-nien-lich.mp3",
+            },
+            {
+                id: 11,
+                title: "Đời thừa",
+                author: "Nam Cao",
+                pdf: "pdf/11-doi-thua.pdf",
+                audio: "audio/11-doi-thua.mp3",
+            },
+            {
+                id: 12,
+                title: "Tội ác và trừng phạt",
+                author: "Fyodor M. Dostoyevsky",
+                pdf: "pdf/12-toi-ac-va-trung-phat.pdf",
+                audio: "audio/12-toi-ac.mp3",
+            },
+        ];
+
+        // ===============================
+        //   CHỌN SÁCH THEO ?id= TRÊN URL
+        // ===============================
+        function getBookFromQuery() {
+            const params = new URLSearchParams(window.location.search);
+            const idParam = params.get("id");
+            const idNum = Number(idParam);
+
+            let found = books.find(b => b.id === idNum);
+            if (!found) {
+                // Nếu không có id hoặc id sai -> lấy sách đầu tiên
+                found = books[0];
+            }
+            return found;
+        }
+
+        const currentBook = getBookFromQuery();
+        const pdfUrl = currentBook.pdf;   // 👈 dùng pdf của sách hiện tại
+
+        const $flipbook = $("#flipbook");
+        let pdfTotalPages = 0;
+
+        // Lấy element âm thanh
+        const flipSound = document.getElementById("flip-sound");
+        const bookAudio = document.getElementById("book-audio");
+        const btnAudio = document.getElementById("btn-audio");
+        let isBookAudioPlaying = false;
+
+        // Gán file sách nói cho audio (nếu có)
+        if (currentBook.audio && bookAudio) {
+            bookAudio.src = currentBook.audio;
+        }
+
+        function playFlipSound() {
+            if (!flipSound) return;
+            try {
+                flipSound.currentTime = 0;
+                flipSound.play().catch(() => { });
+            } catch (e) {
+                console.warn("Không phát được âm thanh flip:", e);
+            }
+        }
+
+        function updateAudioButton() {
+            if (!btnAudio) return;
+            btnAudio.textContent = isBookAudioPlaying ? "⏸ Dừng sách nói" : "▶ Nghe sách nói";
+        }
+
+        function toggleBookAudio() {
+            if (!bookAudio) return;
+            if (!bookAudio.src) return; // sách này chưa có audio
+
+            if (bookAudio.paused) {
+                bookAudio.play().then(() => {
+                    isBookAudioPlaying = true;
+                    updateAudioButton();
+                }).catch(err => {
+                    console.warn("Không phát được sách nói:", err);
+                });
+            } else {
+                bookAudio.pause();
+                isBookAudioPlaying = false;
+                updateAudioButton();
+            }
+        }
+
+        if (btnAudio && bookAudio) {
+            btnAudio.addEventListener("click", toggleBookAudio);
+            bookAudio.addEventListener("ended", () => {
+                isBookAudioPlaying = false;
+                updateAudioButton();
+            });
+        }
+
+        // Tính kích thước sách theo màn hình (ưu tiên cho điện thoại nằm ngang)
+        function getBookSize() {
+            const RATIO = 1000 / 600;
+
+            let availW = window.innerWidth * 0.98;
+            let availH = window.innerHeight * 0.9;
+
+            let width = availW;
+            let height = width / RATIO;
+
+            if (height > availH) {
+                height = availH;
+                width = height * RATIO;
+            }
+
+            return {
+                width: Math.round(width),
+                height: Math.round(height),
+            };
+        }
+
+        function updateCurrentPage(turnPage) {
+            if (!pdfTotalPages) return;
+
+            let pdfPage;
+            if (turnPage <= 2) {
+                pdfPage = 1;
+            } else if (turnPage >= pdfTotalPages + 3) {
+                pdfPage = pdfTotalPages;
+            } else {
+                pdfPage = turnPage - 2;
+            }
+
+            document.getElementById("current-page").textContent = pdfPage;
+        }
+
+        // Khởi tạo flipbook
+        function initFlipbook() {
+            const size = getBookSize();
+
+            if ($flipbook.data("initialized")) {
+                $flipbook.turn("size", size.width, size.height);
+                return;
+            }
+
+            $flipbook.turn({
+                width: size.width,
+                height: size.height,
+                autoCenter: true,
+                elevation: 50,
+                gradients: true,
+                display: "double",
+                page: 3,
+            });
+
+            $flipbook.bind("turning", function () {
+                playFlipSound();
+            });
+
+            $flipbook.bind("turned", function (e, page) {
+                updateCurrentPage(page);
+            });
+
+            $flipbook.data("initialized", true);
+            updateCurrentPage(3);
+
+            window.addEventListener("resize", function () {
+                if ($flipbook.data("initialized")) {
+                    const s = getBookSize();
+                    $flipbook.turn("size", s.width, s.height);
+                }
+            });
+        }
+
+        // Tính năng "tới trang"
+        function setupGoto() {
+            const input = document.getElementById("goto-page");
+            const btn = document.getElementById("btn-goto");
+
+            function goToPage() {
+                if (!pdfTotalPages || !$flipbook.data("initialized")) return;
+
+                let val = parseInt(input.value, 10);
+                if (isNaN(val)) return;
+
+                if (val < 1) val = 1;
+                if (val > pdfTotalPages) val = pdfTotalPages;
+
+                const turnPage = val + 2;
+                $flipbook.turn("page", turnPage);
+            }
+
+            btn.addEventListener("click", goToPage);
+            input.addEventListener("keyup", function (e) {
+                if (e.key === "Enter") {
+                    goToPage();
+                }
+            });
+        }
+
+        setupGoto();
+
+        // Tải PDF
+        const loadingTask = pdfjsLib.getDocument(pdfUrl);
+        loadingTask.promise
+            .then(function (pdf) {
+                pdfTotalPages = pdf.numPages;
+                document.getElementById("total-pages").textContent = pdfTotalPages;
+
+                const totalPages = pdf.numPages;
+
+                // Bìa đầu (dùng title + author của sách hiện tại)
+                $flipbook.append(`
+          <div class="hard">
+            ${currentBook.title}
+            <small>${currentBook.author}</small>
+          </div>
+        `);
+                // Mặt trong bìa
+                $flipbook.append(`<div class="hard"></div>`);
+
+                const pageDivs = [];
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageDiv = document.createElement("div");
+                    pageDiv.classList.add("page");
+                    pageDiv.setAttribute("data-page", i);
+                    $flipbook.append(pageDiv);
+                    pageDivs[i] = pageDiv;
+                }
+
+                // Bìa sau (thêm luôn)
+                $flipbook.append(`<div class="hard"></div>`);
+                $flipbook.append(`
+          <div class="hard">
+            Hết sách
+            <small>~ Flipbook PDF</small>
+          </div>
+        `);
+
+                // 👉 Chỉ khởi động flipbook sau khi render xong TRANG ĐẦU TIÊN
+                let flipbookStarted = false;
+
+                for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+                    pdf.getPage(pageNum).then(function (page) {
+                        const scale = 1.2; // giảm nhẹ cho đỡ lag mobile
+                        const viewport = page.getViewport({ scale: scale });
+
+                        const canvas = document.createElement("canvas");
+                        const context = canvas.getContext("2d");
+                        canvas.width = viewport.width;
+                        canvas.height = viewport.height;
+
+                        canvas.style.width = "100%";
+                        canvas.style.height = "auto";
+                        canvas.style.display = "block";
+
+                        const renderContext = {
+                            canvasContext: context,
+                            viewport: viewport,
+                        };
+
+                        page.render(renderContext).promise.then(function () {
+                            const container = pageDivs[page.pageNumber];
+                            if (container) {
+                                container.innerHTML = "";
+
+                                const inner = document.createElement("div");
+                                inner.classList.add("page-inner");
+                                inner.appendChild(canvas);
+
+                                container.appendChild(inner);
+                            }
+
+                            // Lần đầu có trang render xong -> init flipbook
+                            if (!flipbookStarted) {
+                                initFlipbook();
+                                flipbookStarted = true;
+                            }
+                        }).catch(function (err) {
+                            console.error("Lỗi render trang PDF:", page.pageNumber, err);
+                        });
+                    }).catch(function (err) {
+                        console.error("Lỗi lấy trang PDF:", pageNum, err);
+                    });
+                }
+            })
+            .catch(function (err) {
+                console.error("Lỗi khi load PDF:", err);
+                alert(
+                    "Không tải được file PDF. Hãy kiểm tra lại tên file và đường dẫn (pdfUrl)."
+                );
+            });
+    </script>
+</body>
+
+</html>

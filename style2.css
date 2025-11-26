@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    display: grid;
+    place-content: center;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background: linear-gradient(120deg, #45ec53, #eeec77);
+}
+
+/* Bọc cả sách + thanh điều khiển */
+.book-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Khung cuốn sách */
+.flipbook {
+    width: 1000px;   /* sẽ bị js ghi đè bằng .turn("size") */
+    height: 600px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.35);
+    background: #cccccc;
+}
+
+/* Trang cứng (bìa) */
+.flipbook .hard {
+    background: #c0392b !important;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.flipbook .hard small{
+    font-style: italic;
+    font-weight: lighter;
+    opacity: 0.7;
+    font-size: 14px;
+    display: block;
+    margin-top: 8px;
+}
+
+/* Trang thường (page) */
+.flipbook .page {
+    background: #eae7dc;          /* nền giống giấy cũ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    padding: 0;
+    overflow: hidden;             /* chặn nội dung tràn */
+}
+
+/* Khung bên trong 1 trang, để tạo viền dày hơn */
+.flipbook .page-inner {
+    width: 90%;                   /* chừa viền xung quanh */
+    height: 90%;
+    background: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;                /* viền trắng trong */
+}
+
+/* Canvas PDF nằm gọn trong page-inner */
+.flipbook .page-inner canvas {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+
+/* Nếu có dùng img ở đâu đó vẫn dùng được */
+.page img{
+    width: 70%;
+    object-fit: cover;
+    margin: auto;
+}
+
+.flipbook .page small{
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* Thanh điều khiển bên dưới */
+.book-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 6px 10px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+    font-size: 14px;
+}
+
+/* Box nhập và nút "tới trang" */
+.goto-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#goto-page {
+    width: 90px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.2);
+    outline: none;
+    font-size: 14px;
+}
+
+#goto-page:focus {
+    border-color: #2980b9;
+}
+
+#btn-goto {
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: none;
+    background: #2980b9;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
+}
+
+#btn-goto:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    opacity: 0.95;
+}
+
+#btn-goto:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+#btn-goto,
+#btn-audio {
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: none;
+    background: #2980b9;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
+}
+
+#btn-goto:hover,
+#btn-audio:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    opacity: 0.95;
+}
+
+#btn-goto:active,
+#btn-audio:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+
+/* Responsive nhỏ hơn (phòng khi bạn xem dọc hoặc màn hình nhỏ) */
+@media (max-width: 768px) {
+    body {
+        overflow: auto;
+    }
+
+    .book-controls {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+
+    #goto-page {
+        width: 70px;
+    }
+}

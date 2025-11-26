@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Thư viện xanh</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style3.css" />
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <!-- HEADER -->
+        <header class="site-header">
+
+            <!-- Logo trái – Tên web – Logo phải -->
+            <div class="header-center">
+                <div class="circle-logo">
+                    <img src="pic/l1.jpg" alt="Logo trái">
+                </div>
+
+                <div class="site-name">THPT PHAN CHÂU TRINH</div>
+
+                <div class="circle-logo">
+                    <img src="pic/logo.jpg" alt="Logo phải">
+                </div>
+            </div>
+
+            <!-- MENU -->
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="tongquan.html">Tổng quan dự án</a></li>
+                    <li><a href="tin-tuc.html">Tin tức</a></li>
+                    <li><a href="index1.html">Tủ sách online</a></li>
+                    <li><a href="index2.html">Tủ sách xanh</a></li>
+                    <li><a href="mx.html">Mượn sách</a></li>
+                </ul>
+            </nav>
+
+        </header>
+
+
+    <!-- PHẦN NỘI DUNG CHÍNH -->
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>Chào mừng đến với tủ sách xanh</h1>
+                <p>Thông qua những cuốn sách chọn lọc về thiên nhiên, biến đổi khí hậu và lối sống xanh, <strong>“Tủ sách xanh”</strong>hướng đến việc giúp học sinh hiểu đúng, quan tâm thật và từng bước hình thành ý thức bảo vệ không gian học đường cũng như môi trường sống xung quanh.</p>
+            </div>
+
+            <!-- Khu điều khiển: tìm kiếm + lọc -->
+            <div class="controls">
+                <input id="searchInput" type="text" placeholder="Tìm theo tên sách, tác giả..." />
+                <select id="genreFilter">
+                    <option value="all">Tất cả thể loại</option>
+                    <!-- Option thể loại sẽ được JS tự thêm -->
+                </select>
+            </div>
+        </div>
+
+        <!-- Cột trái: danh sách sách -->
+        <div class="book-list" id="bookList"></div>
+
+        <!-- Cột phải: chi tiết sách -->
+        <div class="detail" id="bookDetail">
+            <h2>Chọn một cuốn sách</h2>
+            <p>Thông tin, bìa sách và nút “Đọc thử” sẽ hiển thị ở đây.</p>
+        </div>
+    </div>
+
+    <script src="script2.js"></script>
+</body>
+
+</html>
