@@ -2,336 +2,88 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8" />
-    <title>Mượn sách</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mượn nhiều sách</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="mx.css" />
-    <!-- ZXing JS -->
-    <script src="https://unpkg.com/@zxing/library@latest"></script>
 </head>
+
 <body>
+
+    <!-- HEADER NHỎ + NÚT TRANG CHỦ -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="logo-circle">📚</span>
+            <span class="site-title">Tạo phiếu mượn sách</span>
+        </div>
+
+        <!-- đổi in.html thành file trang chủ thật của bạn -->
+        <a href="index.html" class="home-btn">Trang chủ</a>
+    </header>
+
     <div class="container">
-        <!-- KHUNG QUÉT BARCODE -->
+
+        <!-- UPLOAD ẢNH -->
         <div class="card">
-            <h1>Quét mã vạch để tạo đơn mượn sách</h1>
-            
-            <video id="video" autoplay playsinline></video>
-            <button id="btn-start-scan">Bắt đầu quét</button>
-            <div id="bt">
-                <a href="in.html">Trang chủ</a>
-            </div>
+            <h2>1️⃣ Chọn ảnh mã vạch / QR của sách</h2>
 
+            <input type="file" id="image-input" accept="image/*" multiple />
 
-            <!-- Thông báo trạng thái quét -->
-            <div id="scan-result" style="margin-top:8px; font-size:14px;"></div>
-
-            <!-- In barcode đã quét -->
-            <div id="barcode-display"
-                 style="margin-top:10px;
-                        font-size:20px;
-                        font-weight:700;
-                        color:#0ea5e9;
-                        text-align:center;">
-            </div>
+            <p id="scan-result" class="status"></p>
         </div>
 
-        <!-- THÔNG TIN SÁCH -->
-        <div class="card" id="book-info-card" style="display:none;">
-            <h2 style="font-size:16px; margin-top:0;">Thông tin sách</h2>
-            <div class="info-row"><span class="info-label">Barcode:</span> <span id="info-barcode"></span></div>
-            <div class="info-row"><span class="info-label">Tên sách:</span> <span id="info-title"></span></div>
-            <div class="info-row"><span class="info-label">Tác giả:</span> <span id="info-author"></span></div>
-            <div class="info-row"><span class="info-label">NXB:</span> <span id="info-publisher"></span></div>
-            <div class="info-row"><span class="info-label">Năm XB:</span> <span id="info-year"></span></div>
+        <!-- DANH SÁCH SÁCH -->
+        <div id="books-list" class="card hidden">
+            <h2>2️⃣ Sách đã nhận</h2>
+            <div id="books-container"></div>
         </div>
 
-        <!-- FORM THÔNG TIN NGƯỜI MƯỢN + NGÀY TRẢ -->
-        <div class="card" id="borrow-form-card" style="display:none;">
-            <h2 style="font-size:16px; margin-top:0;">Thông tin người mượn</h2>
+        <!-- THÔNG TIN NGƯỜI MƯỢN -->
+        <div id="borrow-form-card" class="card hidden">
+            <h2>3️⃣ Thông tin người mượn</h2>
+
             <label>Họ tên</label>
-            <input type="text" id="student_name" placeholder="Nguyễn Văn A" />
+            <input id="student_name" placeholder="Nguyễn Văn A" />
 
             <label>Lớp</label>
-            <input type="text" id="student_class" placeholder="11/10" />
+            <input id="student_class" placeholder="11/10" />
 
             <label>Trường</label>
-            <input type="text" id="school" placeholder="THPT ABC" />
+            <input id="school" placeholder="THPT Phan Châu Trinh" />
 
             <label>Mã học sinh</label>
-            <input type="text" id="student_id" placeholder="HS00123" />
+            <input id="student_id" placeholder="HS00123" />
 
-            <label>Gmail</label>
-            <input type="email" id="email" placeholder="ten@gmail.com" />
+            <label>Email</label>
+            <input id="email" type="email" placeholder="abc@gmail.com" />
 
             <label>Số điện thoại</label>
-            <input type="tel" id="phone" placeholder="0123456789" />
+            <input id="phone" placeholder="0123456789" />
 
             <label>Ngày trả dự kiến</label>
-            <input type="date" id="return_date" />
+            <input id="return_date" type="date" />
 
-            <button id="btn-submit">Gửi yêu cầu (gửi email)</button>
-            <div id="borrow-message" style="margin-top:8px; font-size:14px;"></div>
+            <button id="btn-submit" class="btn-primary">Tạo phiếu mượn</button>
+            <p id="borrow-message" class="status"></p>
         </div>
 
-        <!-- BƯỚC 2: NHẬP MÃ XÁC NHẬN -->
-        <div class="card" id="confirm-card" style="display:none;">
-            <h2 style="font-size:16px; margin-top:0;">Xác nhận qua email</h2>
-            <p style="font-size:14px;">
-                Hệ thống đã gửi email chứa <strong>Mã phiếu</strong> và <strong>Mã xác nhận</strong>.
-                Vui lòng nhập <strong>Mã xác nhận</strong> để in vé mượn sách.
-            </p>
-            <div class="info-row"><span class="info-label">Mã phiếu:</span> <span id="current-ticket-id"></span></div>
+        <!-- PHIẾU MƯỢN -->
+        <div id="ticket-card" class="card hidden">
+            <h2>4️⃣ Phiếu mượn đem đến thủ thư để xác nhận</h2>
 
-            <label>Mã xác nhận</label>
-            <input type="text" id="confirm_code" placeholder="Ví dụ: 123456" />
+            <!-- QR CODE PHIẾU -->
+            <div class="barcode-box">
+                <div id="ticket-qrcode"></div>
+            </div>
 
-            <button id="btn-confirm">Xác nhận & in vé</button>
-            <div id="confirm-message" style="margin-top:8px; font-size:14px;"></div>
+            <div id="ticket-content"></div>
         </div>
 
-        <!-- VÉ MƯỢN SÁCH -->
-        <div class="card" id="ticket-card" style="display:none;">
-            <h2 style="font-size:16px; margin-top:0;">Vé mượn sách</h2>
-            <div class="ticket" id="ticket-content"></div>
-        </div>
     </div>
 
-    <script>
-        const API_BASE = "https://apibarcode.onrender.com"; 
-        const videoElem       = document.getElementById("video");
-        const btnStartScan    = document.getElementById("btn-start-scan");
-        const scanResult      = document.getElementById("scan-result");
-        const barcodeDisplay  = document.getElementById("barcode-display");
-
-        let currentBarcode    = null;
-        let isScanning        = false;
-        let pendingTicketId   = null;  // lưu ticket_id chờ xác nhận
-
-        // ZXing reader
-        const codeReader = new ZXing.BrowserMultiFormatReader();
-        let selectedDeviceId = null;
-
-        // ==============================
-        // LẤY DANH SÁCH CAMERA
-        // ==============================
-        async function initDevices() {
-            try {
-                const devices = await codeReader.listVideoInputDevices();
-                if (!devices || devices.length === 0) {
-                    scanResult.textContent = "Không tìm thấy camera trên thiết bị!";
-                    return;
-                }
-
-                const backCam = devices.find(d =>
-                    d.label && d.label.toLowerCase().includes("back")
-                );
-                selectedDeviceId = (backCam || devices[0]).deviceId;
-            } catch (err) {
-                console.error("Lỗi lấy danh sách camera:", err);
-                scanResult.textContent = "Không truy cập được camera. Kiểm tra quyền.";
-            }
-        }
-        initDevices();
-
-        // ==============================
-        // NÚT BẮT ĐẦU / DỪNG QUÉT
-        // ==============================
-        btnStartScan.addEventListener("click", () => {
-            if (isScanning) {
-                stopScan();
-            } else {
-                startScan();
-            }
-        });
-
-        function startScan() {
-            if (!selectedDeviceId) {
-                scanResult.textContent = "Chưa chọn được camera!";
-                return;
-            }
-
-            isScanning = true;
-            btnStartScan.textContent = "Dừng quét";
-            scanResult.textContent = "Đang mở camera, đưa barcode vào khung...";
-            barcodeDisplay.textContent = "";
-
-            codeReader.decodeFromVideoDevice(selectedDeviceId, videoElem, (result, err) => {
-                if (result) {
-                    const code = result.getText();
-
-                    scanResult.textContent = "Đã đọc barcode: " + code;
-                    barcodeDisplay.textContent = code;
-
-                    currentBarcode = code;
-                    stopScan();
-                    fetchBookInfo(code);
-                }
-            });
-        }
-
-        function stopScan() {
-            isScanning = false;
-            btnStartScan.textContent = "Bắt đầu quét";
-            try {
-                codeReader.reset();
-            } catch (e) {
-                console.warn(e);
-            }
-        }
-
-        // ==============================
-        // GỌI API LẤY THÔNG TIN SÁCH
-        // ==============================
-        function fetchBookInfo(barcode) {
-            fetch(`${API_BASE}/api/book/` + encodeURIComponent(barcode))
-
-                .then(async res => {
-                    if (!res.ok) {
-                        const text = await res.text();
-                        throw new Error("Server trả về mã " + res.status);
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    if (!data.success) throw new Error(data.message || "Lỗi");
-                    const book = data.book;
-
-                    document.getElementById("info-barcode").textContent   = book.barcode || "";
-                    document.getElementById("info-title").textContent     = book.title || "";
-                    document.getElementById("info-author").textContent    = book.author || "";
-                    document.getElementById("info-publisher").textContent = book.publisher || "";
-                    document.getElementById("info-year").textContent      = book.year || "";
-
-                    document.getElementById("book-info-card").style.display   = "block";
-                    document.getElementById("borrow-form-card").style.display = "block";
-                })
-                .catch(err => {
-                    console.error(err);
-                    scanResult.textContent = "Lỗi: " + err.message;
-                });
-        }
-
-        // ==============================
-        // GỬI YÊU CẦU MƯỢN (BƯỚC 1)
-        // ==============================
-        document.getElementById("btn-submit").addEventListener("click", () => {
-            const msg = document.getElementById("borrow-message");
-            msg.textContent = "";
-
-            if (!currentBarcode) {
-                msg.textContent = "Chưa có barcode sách!";
-                return;
-            }
-
-            const payload = {
-                barcode: currentBarcode,
-                student_name: document.getElementById("student_name").value.trim(),
-                student_class: document.getElementById("student_class").value.trim(),
-                school: document.getElementById("school").value.trim(),
-                student_id: document.getElementById("student_id").value.trim(),
-                email: document.getElementById("email").value.trim(),
-                phone: document.getElementById("phone").value.trim(),
-                return_date: document.getElementById("return_date").value
-            };
-
-            fetch(`${API_BASE}/api/borrow`, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(payload)
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (!data.success) {
-                        msg.textContent = data.message || "Có lỗi xảy ra!";
-                        return;
-                    }
-
-                    msg.textContent = "Đã gửi email. Vui lòng kiểm tra hộp thư để lấy mã xác nhận.";
-                    pendingTicketId = data.ticket_id;
-
-                    document.getElementById("current-ticket-id").textContent = pendingTicketId;
-                    document.getElementById("confirm-card").style.display = "block";
-                })
-                .catch(err => {
-                    console.error(err);
-                    msg.textContent = "Lỗi kết nối server!";
-                });
-        });
-
-        // ==============================
-        // BƯỚC 2: XÁC NHẬN & IN VÉ
-        // ==============================
-        document.getElementById("btn-confirm").addEventListener("click", () => {
-            const cmsg = document.getElementById("confirm-message");
-            cmsg.textContent = "";
-
-            const code = document.getElementById("confirm_code").value.trim();
-            if (!pendingTicketId) {
-                cmsg.textContent = "Chưa có mã phiếu. Hãy gửi yêu cầu mượn trước.";
-                return;
-            }
-            if (!code) {
-                cmsg.textContent = "Vui lòng nhập mã xác nhận.";
-                return;
-            }
-
-            const payload = {
-                ticket_id: pendingTicketId,
-                verification_code: code
-            };
-
-            fetch(`${API_BASE}/api/confirm-borrow`,{
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(payload)
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (!data.success) {
-                        cmsg.textContent = data.message || "Mã xác nhận không đúng!";
-                        return;
-                    }
-
-                    cmsg.textContent = "Đã xác nhận thành công! Vé mượn đã được tạo.";
-                    showTicket(data.ticket);
-                })
-                .catch(err => {
-                    console.error(err);
-                    cmsg.textContent = "Lỗi kết nối server!";
-                });
-        });
-
-        // Hiển thị vé mượn sách
-        function showTicket(ticket) {
-            const ticketCard    = document.getElementById("ticket-card");
-            const ticketContent = document.getElementById("ticket-content");
-
-            // Mã xác nhận mask bớt cho nhìn “bí mật”
-            let maskedCode = "";
-            if (ticket.verification_code) {
-                const s = ticket.verification_code.toString();
-                maskedCode = s.replace(/.(?=.{2})/g, "*");
-            }
-
-            ticketContent.innerHTML = `
-                <div><strong>Mã phiếu:</strong> ${ticket.ticket_id}</div>
-                <div><strong>Mã xác nhận:</strong> ${maskedCode}</div>
-                <hr />
-                <div><strong>Tên sách:</strong> ${ticket.book_title}</div>
-                <div><strong>Barcode:</strong> ${ticket.barcode}</div>
-                <hr />
-                <div><strong>Họ tên:</strong> ${ticket.student_name}</div>
-                <div><strong>Lớp:</strong> ${ticket.student_class}</div>
-                <div><strong>Trường:</strong> ${ticket.school}</div>
-                <div><strong>Mã HS:</strong> ${ticket.student_id}</div>
-                <div><strong>Email:</strong> ${ticket.email}</div>
-                <div><strong>SĐT:</strong> ${ticket.phone}</div>
-                <hr />
-                <div><strong>Ngày mượn:</strong> ${ticket.borrow_date}</div>
-                <div><strong>Ngày trả dự kiến:</strong> ${ticket.return_date}</div>
-                <div><em>(Phiếu đã được xác nhận từ email)</em></div>
-            `;
-            ticketCard.style.display = "block";
-        }
-    </script>
+    <!-- ZXing để đọc barcode/QR từ ảnh sách -->
+    <script src="https://unpkg.com/@zxing/library@latest"></script>
+    <!-- QRCode.js để tạo QR trên phiếu -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="mx.js"></script>
 </body>
 </html>

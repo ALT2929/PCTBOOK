@@ -22,9 +22,6 @@
                     <img src="pic/l1.jpg" alt="Logo trái">
                 </div>
 
-                <div class="site-name">TRƯỜNG THPT<br>
-                    PHAN CHÂU TRINH
-                </div>
 
                 <div class="circle-logo">
                     <img src="pic/logo.jpg" alt="Logo phải">
@@ -38,8 +35,7 @@
                     <a href="tongquan.html">Tổng quan dự án</a>
                     <a href="tin-tuc.html">Tin tức</a>
                     <a href="index1.html">Tủ sách online</a>
-                    <a href="index2.html">Tủ sách xanh</a>
-                    <a href="#about">mượn sách</a>
+                    <a href="mx.html">mượn sách</a>
                 </div>
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     <i class="fa fa-bars"></i>
@@ -48,44 +44,44 @@
         </header>
 
 
-        <!-- PHẦN NỘI DUNG CHÍNH -->
-        <div class="container">
-            <div class="header">
-                <div>
-                    <h1>Chào mừng đến với tủ sách online</h1>
-                    <p>hãy bấm vào sách để xem giới thiệu, đọc thử, tìm kiếm và lọc theo thể loại.</p>
-                </div>
-
-                <!-- Khu điều khiển: tìm kiếm + lọc -->
-                <div class="controls">
-                    <input id="searchInput" type="text" placeholder="Tìm theo tên sách, tác giả..." />
-                    <select id="genreFilter">
-                        <option value="all">Tất cả thể loại</option>
-                        <!-- Option thể loại sẽ được JS tự thêm -->
-                    </select>
-                </div>
+    <!-- PHẦN NỘI DUNG CHÍNH -->
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>Chào mừng đến với tủ sách online</h1>
+                <p>hãy bấm vào sách để xem giới thiệu, đọc thử, tìm kiếm và lọc theo thể loại.</p>
             </div>
 
-            <!-- Cột trái: danh sách sách -->
-            <div class="book-list" id="bookList"></div>
-
-            <!-- Cột phải: chi tiết sách -->
-            <div class="detail" id="bookDetail">
-                <h2>Chọn một cuốn sách</h2>
-                <p>Thông tin, bìa sách và nút “Đọc thử” sẽ hiển thị ở đây.</p>
+            <!-- Khu điều khiển: tìm kiếm + lọc -->
+            <div class="controls">
+                <input id="searchInput" type="text" placeholder="Tìm theo tên sách, tác giả..." />
+                <select id="genreFilter">
+                    <option value="all">Tất cả thể loại</option>
+                    <!-- Option thể loại sẽ được JS tự thêm -->
+                </select>
             </div>
         </div>
-        <script>
-            function myFunction() {
-                var x = document.getElementById("myLinks");
-                if (x.style.display === "block") {
-                    x.style.display = "none";
-                } else {
-                    x.style.display = "block";
-                }
+
+        <!-- Cột trái: danh sách sách -->
+        <div class="book-list" id="bookList"></div>
+
+        <!-- Cột phải: chi tiết sách -->
+        <div class="detail" id="bookDetail">
+            <h2>Chọn một cuốn sách</h2>
+            <p>Thông tin, bìa sách và nút “Đọc thử” sẽ hiển thị ở đây.</p>
+        </div>
+    </div>
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myLinks");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
             }
-        </script>
-        <script src="script1.js"></script>
+        }
+    </script>
+    <script src="script1.js"></script>
 </body>
 
 </html>

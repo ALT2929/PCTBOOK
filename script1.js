@@ -62,7 +62,6 @@ const books = [
         tags: ["Tuổi thơ", "Tình cảm gia đình"],
         genre: "Tiểu thuyết",
         cover: "pic/6.jpg",
-        previewUrl: "https://848603edf5.vws.vegacdn.vn//data/doc/haiphong/2025/thcsmydong/2025_4/24/toi-thay-hoa-vang-tren-co-xanh-nguyen-nhat-anh_24420258.pdf",
     },
     {
         id: 7,
@@ -73,7 +72,6 @@ const books = [
         tags: ["Tuổi học trò", "Tình bạn – tình yêu"],
         genre: "Tiểu thuyết",
         cover: "pic/7.jpg",
-        previewUrl: "https://848603edf5.vws.vegacdn.vn/data/haiphong/thcsquangtrungngoquyen/2023_6/14/mat-biec-nguyen-nhat-anh_146202310.pdf",
     },
     {
         id: 8,
@@ -84,7 +82,6 @@ const books = [
         tags: ["Tuổi học trò", "Tình yêu"],
         genre: "Tiểu thuyết",
         cover: "pic/8.jpg",
-        previewUrl: "https://848603edf5.vws.vegacdn.vn/data/haiphong/thcsquangtrungngoquyen/2023_6/14/sachmoinet-co-gai-den-tu-hom-qua_146202310.pdf",
     },
     {
         id: 9,
@@ -95,18 +92,6 @@ const books = [
         tags: ["Sống xanh", "Bảo vệ môi trường"],
         genre: "Kỹ năng sống",
         cover: "pic/9.png",
-        previewUrl: "https://romhub.io/EBOOK/KHO%20S%C3%81CH%20KH%E1%BB%A6NG%203000+%20CU%E1%BB%90N%20S%C3%81CH/THI%C3%8AN%20NHI%C3%8AN,%20M%C3%94I%20TR%C6%AF%E1%BB%9CNG,%20MU%C3%94N%20LO%C3%80I%20(11)/S%E1%BB%91ng%20Xanh%20Kh%C3%B4ng%20Kh%C3%B3%20(Nam%20Kha)%20eb/S%E1%BB%91ng%20Xanh%20Kh%C3%B4ng%20Kh%C3%B3%20-%20Nam%20Kha%20[eBook].pdf",
-    },
-    {
-        id: 10,
-        title: "Niên lịch miền gió cát",
-        author: "Aldo Leopold",
-        intro:
-            "“Niên Lịch Miền Gió Cát” là tập luận văn kinh điển, nơi Aldo Leopold ghi lại những quan sát tinh tế về thiên nhiên và kêu gọi con người xây dựng một đạo đức đất đai đầy nhân văn và bền vững.",
-        tags: ["Sinh thái học", "Bảo tồn thiên nhiên"],
-        genre: "Triết luận",
-        cover: "pic/10.jpg  ",
-        previewUrl: "https://ebookvie.com/doc-sach/nien-lich-mien-gio-cat/",
     },
     {
         id: 11,
@@ -117,7 +102,6 @@ const books = [
         tags: ["Văn học hiện thực", "Xã hội Việt Nam trước 1945"],
         genre: "Tâm lý – xã hội",
         cover: "pic/11.jpg",
-        previewUrl: "https://dilib.vn/img/pdf/9500-doi-thua-thuviensach.vn.pdf",
     },
     {
         id: 12,
@@ -128,7 +112,6 @@ const books = [
         tags: ["Tâm lý tội phạm", "Nhân tính & cứu rỗi"],
         genre: "Tiểu thuyết",
         cover: "pic/12.jpg",
-        previewUrl: "https://dilib.vn/img/pdf/7832-toi-ac-va-trung-phat-thuviensach.vn.pdf",
     },
 ];
 

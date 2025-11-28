@@ -1,105 +1,173 @@
-* {
-    box-sizing: border-box;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
+/* ======= NỀN CHUNG ======= */
 body {
     margin: 0;
     padding: 0;
-    background: #f3f4f6;
+    background: #eef7ee;
+    font-family: Arial, sans-serif;
 }
 
+/* ======= HEADER NHỎ GỌN ======= */
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: linear-gradient(90deg, #22c55e, #0ea5e9);
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.logo-circle {
+
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.site-title {
+    font-size: 30px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.home-btn {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Khi bấm trên mobile cho dễ thấy */
+.home-btn:active {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ======= CONTAINER & CARD ======= */
 .container {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 16px;
+    max-width: 750px;
+    margin: 16px auto 24px;
+    padding: 0 10px;
 }
 
 .card {
-    background: #ffffff;
-    border-radius: 12px;
+    background: #fff;
     padding: 16px;
+    border-radius: 14px;
     margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
-h1 {
-    font-size: 20px;
-    text-align: center;
-    margin-top: 0;
-    color: #15803d;
+.hidden {
+    display: none;
 }
 
+/* ======= FORM ======= */
 label {
     display: block;
+    margin-top: 10px;
+    font-weight: bold;
     font-size: 14px;
-    margin: 6px 0 2px;
 }
 
 input {
     width: 100%;
-    padding: 8px 10px;
+    padding: 9px;
+    margin-top: 4px;
     border-radius: 8px;
-    border: 1px solid #d1d5db;
+    border: 1px solid #ccc;
     font-size: 14px;
+    box-sizing: border-box;
 }
 
-button {
+.status {
+    margin-top: 8px;
+    font-weight: 600;
+    color: #0ea5e9;
+    font-size: 13px;
+}
+
+/* ======= NÚT ======= */
+.btn-primary {
+    margin-top: 14px;
     width: 100%;
-    padding: 10px 12px;
-    border-radius: 9999px;
+    padding: 11px;
     border: none;
     background: linear-gradient(90deg, #22c55e, #0ea5e9);
-    color: #fff;
-    font-weight: 600;
-    font-size: 15px;
-    margin-top: 8px;
-}
-#bt a{
-    width: 100%;
-    display: block;        /* để nó thành nút */
-    text-align: center;    /* căn chữ vào giữa */
-    padding: 10px 12px;
-    border-radius: 9999px;
-    border: none;
-    background: linear-gradient(90deg, #22c55e, #0ea5e9);
-    color: #fff;
-    font-weight: 600;
-    font-size: 15px;
-    margin-top: 8px;
-    text-decoration: none; /* xoá gạch chân */
-}
-#bt  a:hover {
-    background-color: white;
-    color: #15803d;
-}
-button:hover {
-    background-color: white;
-    color: #15803d;
-}
-button:active {
-    opacity: 0.9;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-#video {
-    width: 100%;
-    border-radius: 12px;
-    background: #000;
-}
-
-.info-row {
+/* ======= ITEM SÁCH ======= */
+.book-item {
+    padding: 9px;
+    border: 1px solid #cfcfcf;
+    border-radius: 8px;
+    background: #f9fafb;
+    margin-bottom: 8px;
     font-size: 14px;
-    margin: 2px 0;
 }
 
-.info-label {
-    font-weight: 600;
+/* ======= QR BOX ======= */
+.barcode-box {
+    text-align: center;
+    margin-bottom: 10px;
 }
 
-.ticket {
-    background: #ecfdf3;
-    border-radius: 12px;
-    border: 1px dashed #16a34a;
-    padding: 12px;
-    font-size: 14px;
+#ticket-qrcode > img,
+#ticket-qrcode > canvas {
+    width: 140px;
+    height: 140px;
+}
+
+/* ======= RESPONSIVE MOBILE ======= */
+@media (max-width: 600px) {
+    .topbar {
+        padding: 6px 10px;
+    }
+
+    .site-title {
+        font-size: 14px;
+    }
+
+    .home-btn {
+        padding: 4px 10px;
+        font-size: 12px;
+    }
+
+    .card {
+        padding: 14px;
+        border-radius: 12px;
+        margin-bottom: 14px;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+
+    input {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .btn-primary {
+        font-size: 15px;
+        padding: 10px;
+    }
 }
